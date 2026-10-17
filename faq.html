@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>よくある質問（FAQ）</title>
+  <script>
+    (function() {
+      var theme = null;
+      try {
+        var saved = localStorage.getItem('theme');
+        if (saved === 'light' || saved === 'dark') { theme = saved; }
+      } catch (e) {}
+      if (theme === null) {
+        theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #262626;
+      --muted: #57606a;
+      --border: #e0e0e0;
+      --surface: #f4f4f4;
+      --accent: #0f62fe;
+      --on-accent: #ffffff;
+    }
+
+    [data-theme="dark"] {
+      --bg: #161616;
+      --text: #f4f4f4;
+      --muted: #c6c6c6;
+      --border: #393939;
+      --surface: #262626;
+      --accent: #4589ff;
+      --on-accent: #161616;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .page-header {
+      position: relative;
+      background: linear-gradient(135deg, #0f62fe, #a56eff);
+      color: #ffffff;
+      padding: 40px 88px 32px;
+      text-align: center;
+    }
+
+    .logo-link {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      display: block;
+      width: 48px;
+      height: 48px;
+    }
+
+    .logo-link img {
+      display: block;
+      width: 48px;
+      height: 48px;
+    }
+
+    .logo-link:focus-visible,
+    .theme-toggle:focus-visible {
+      outline-color: #ffffff;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-family: inherit;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .page-header p {
+      margin-top: 8px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .controls {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px 24px 0;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 15px;
+      font-family: inherit;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      outline: none;
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .search-box:focus {
+      border-color: var(--accent);
+      background: var(--bg);
+    }
+
+    .search-box::placeholder {
+      color: var(--muted);
+    }
+
+    .category-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .filter-btn {
+      padding: 6px 14px;
+      font-size: 13px;
+      font-family: inherit;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg);
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--on-accent);
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    .category {
+      margin-bottom: 48px;
+    }
+
+    .category-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 8px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 4px;
+      cursor: pointer;
+      user-select: none;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text);
+      gap: 12px;
+    }
+
+    .faq-question:hover {
+      color: var(--accent);
+    }
+
+    .faq-icon {
+      flex-shrink: 0;
+      font-size: 12px;
+      color: var(--muted);
+      transition: transform 0.2s ease;
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 4px 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    .faq-answer ul {
+      padding-left: 20px;
+      margin-top: 6px;
+    }
+
+    .faq-answer li {
+      margin-bottom: 4px;
+    }
+
+    .faq-answer strong {
+      color: var(--text);
+    }
+
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .page-footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+
+    @media (max-width: 480px) {
+      .page-header {
+        padding: 72px 16px 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <a class="logo-link" href="https://www.ibm.com/products/bob" target="_blank" rel="noopener noreferrer"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSIwIDAgMzIwIDMyMCI+CiAgPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI5LjguMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDIuMS4xIEJ1aWxkIDIpICAtLT4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCwgLnN0MSwgLnN0MiB7CiAgICAgICAgZmlsbDogI2UwZTBlMDsKICAgICAgfQoKICAgICAgLnN0MCwgLnN0MiwgLnN0MywgLnN0NCwgLnN0NSwgLnN0NiwgLnN0NywgLnN0OCwgLnN0OSB7CiAgICAgICAgc3Ryb2tlOiAjMjYyNjI2OwogICAgICB9CgogICAgICAuc3QwLCAuc3QyLCAuc3QzLCAuc3Q1LCAuc3QxMCwgLnN0OCwgLnN0OSB7CiAgICAgICAgc3Ryb2tlLW1pdGVybGltaXQ6IDEwOwogICAgICB9CgogICAgICAuc3QwLCAuc3QyLCAuc3QzLCAuc3Q1LCAuc3Q3LCAuc3Q4LCAuc3Q5IHsKICAgICAgICBzdHJva2Utd2lkdGg6IDVweDsKICAgICAgfQoKICAgICAgLnN0MTEgewogICAgICAgIGZpbGw6IHVybCgjbGluZWFyLWdyYWRpZW50MSk7CiAgICAgIH0KCiAgICAgIC5zdDIgewogICAgICAgIGRpc3BsYXk6IG5vbmU7CiAgICAgIH0KCiAgICAgIC5zdDMsIC5zdDEwLCAuc3Q2LCAuc3Q3LCAuc3Q5IHsKICAgICAgICBmaWxsOiBub25lOwogICAgICB9CgogICAgICAuc3QxMiwgLnN0NSB7CiAgICAgICAgZmlsbDogI2Y0ZjRmNDsKICAgICAgfQoKICAgICAgLnN0NCB7CiAgICAgICAgZmlsbDogdXJsKCNsaW5lYXItZ3JhZGllbnQpOwogICAgICAgIHN0cm9rZS13aWR0aDogNC41cHg7CiAgICAgIH0KCiAgICAgIC5zdDQsIC5zdDYgewogICAgICAgIHN0cm9rZS1saW5lam9pbjogcm91bmQ7CiAgICAgIH0KCiAgICAgIC5zdDEwIHsKICAgICAgICBzdHJva2U6ICNlMGUwZTA7CiAgICAgICAgc3Ryb2tlLXdpZHRoOiAxNXB4OwogICAgICB9CgogICAgICAuc3QxMCwgLnN0NiwgLnN0NywgLnN0OSB7CiAgICAgICAgc3Ryb2tlLWxpbmVjYXA6IHJvdW5kOwogICAgICB9CgogICAgICAuc3Q2IHsKICAgICAgICBzdHJva2Utd2lkdGg6IDI1cHg7CiAgICAgIH0KCiAgICAgIC5zdDEzIHsKICAgICAgICBmaWxsOiAjMjYyNjI2OwogICAgICB9CgogICAgICAuc3Q4IHsKICAgICAgICBmaWxsOiAjZmZmOwogICAgICB9CgogICAgICAuc3QxNCB7CiAgICAgICAgZmlsbDogIzBmNjJmZTsKICAgICAgfQogICAgPC9zdHlsZT4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ibGluZWFyLWdyYWRpZW50IiB4MT0iMTIwLjkiIHkxPSItNDY3LjYiIHgyPSIyMDYuOCIgeTI9Ii01MjcuNCIgZ3JhZGllbnRUcmFuc2Zvcm09InRyYW5zbGF0ZSgwIC0zODYpIHNjYWxlKDEgLTEpIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzBmNjJmZSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNhNTZlZmYiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImxpbmVhci1ncmFkaWVudDEiIHgxPSIxNjAuMSIgeTE9Ii00NDciIHgyPSIxNjAuMSIgeTI9Ii00NzcuOSIgZ3JhZGllbnRUcmFuc2Zvcm09InRyYW5zbGF0ZSgwIC0zODYpIHNjYWxlKDEgLTEpIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzBmNjJmZSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwZjYyZmUiIHN0b3Atb3BhY2l0eT0iMCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPGc+CiAgICA8cGF0aCBjbGFzcz0ic3QyIiBkPSJNMTU1LDI0NC43aDBjLTEzLjgsMC0yNS0xMS4yLTI1LTI1di0xOS45aDYwdjE5LjljMCwxMy44LTExLjIsMjUtMjUsMjVoLTEwWiIvPgogICAgPHBhdGggY2xhc3M9InN0NiIgZD0iTTEwMC4xLDI0MC4yYy0zLjgtMy4yLTYuMS03LjUtNi4xLTEyLjEsMC0xMC4xLDExLTE4LjMsMjQuNS0xOC4zIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QxMCIgZD0iTTEwMC4xLDI0MC4yYy0zLjgtMy4yLTYuMS03LjUtNi4xLTEyLjEsMC0xMC4xLDExLTE4LjMsMjQuNS0xOC4zIi8+CiAgICA8cGF0aCBjbGFzcz0ic3Q2IiBkPSJNMjE5LjksMjQwLjJjMy44LTMuMiw2LjEtNy41LDYuMS0xMi4xLDAtMTAuMS0xMS0xOC4zLTI0LjUtMTguMyIvPgogICAgPHBhdGggY2xhc3M9InN0MTAiIGQ9Ik0yMTkuOSwyNDAuMmMzLjgtMy4yLDYuMS03LjUsNi4xLTEyLjEsMC0xMC4xLTExLTE4LjMtMjQuNS0xOC4zIi8+CiAgICA8Zz4KICAgICAgPHJlY3QgY2xhc3M9InN0OCIgeD0iMTA2LjUiIHk9IjE5OS44IiB3aWR0aD0iMTA3IiBoZWlnaHQ9IjcwIiByeD0iMTIuNSIgcnk9IjEyLjUiLz4KICAgICAgPGc+CiAgICAgICAgPHBhdGggY2xhc3M9InN0MTQiIGQ9Ik0xNDUuNSwyMjUuM2wtMTMuNSwxMGMtLjQuNC0uMy42LDAsMWwxMi41LDkuNWMtLjksNC4xLTEuMyw2LjktNCw0LjVsLTE3LTEyLjVjLTEuNS0xLTEuNS0zLjUsMC00LjVsMjAtMTQuNWMyLDIsMyw1LDIsNi41WiIvPgogICAgICAgIDxwYXRoIGNsYXNzPSJzdDE0IiBkPSJNMTY5LjgsMjI0LjhsMTMuNSwxMGMuNC40LjMuNiwwLDFsLTEyLjUsOS41Yy45LDQuMSwxLjMsNi45LDQsNC41bDE3LTEyLjVjMS41LTEsMS41LTMuNSwwLTQuNWwtMjAtMTQuNWMtMiwyLTMsNS0yLDYuNVoiLz4KICAgICAgICA8cmVjdCBjbGFzcz0ic3QxNCIgeD0iMTM0LjQiIHk9IjIzMi4zIiB3aWR0aD0iNDYuMSIgaGVpZ2h0PSI2IiByeD0iMiIgcnk9IjIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0xMTYuNSAzMDYuNikgcm90YXRlKC03MC44KSIvPgogICAgICA8L2c+CiAgICA8L2c+CiAgICA8Zz4KICAgICAgPHBhdGggY2xhc3M9InN0NSIgZD0iTTExMS4zLDI1OC4yYy0xMC45LTEuOS0xOC4xLTEyLjMtMTYuMi0yMy4yczEyLjMtMTguMSwyMy4yLTE2LjJsLTcsMzkuNFoiLz4KICAgICAgPHBhdGggY2xhc3M9InN0NSIgZD0iTTIwMS43LDIxOC44YzEwLjktMS45LDIxLjMsNS4zLDIzLjIsMTYuMiwxLjksMTAuOS01LjMsMjEuMy0xNi4yLDIzLjJsLTctMzkuNFoiLz4KICAgIDwvZz4KICA8L2c+CiAgPGcgaWQ9ImhlYWQiPgogICAgPGc+CiAgICAgIDxyZWN0IGNsYXNzPSJzdDAiIHg9IjIxMi4zIiB5PSIxMzguNCIgd2lkdGg9IjIyIiBoZWlnaHQ9IjMwIiByeD0iNSIgcnk9IjUiLz4KICAgICAgPHJlY3QgY2xhc3M9InN0MCIgeD0iODQuMyIgeT0iMTM4LjQiIHdpZHRoPSIyMiIgaGVpZ2h0PSIzMCIgcng9IjUiIHJ5PSI1Ii8+CiAgICA8L2c+CiAgICA8cmVjdCBjbGFzcz0ic3QxMiIgeD0iOTYuMyIgeT0iMTE0LjQiIHdpZHRoPSIxMjYiIGhlaWdodD0iNzgiIHJ4PSIyNCIgcnk9IjI0Ii8+CiAgICA8cGF0aCBjbGFzcz0ic3QxIiBkPSJNMTA2LjMsMTY4LjR2LTMwYzAtMTMuMywxMC43LTI0LDI0LTI0aC0xMGMtMTMuMywwLTI0LDEwLjctMjQsMjR2MzBjMCwxMy4zLDEwLjcsMjQsMjQsMjRoMTBjLTEzLjMsMC0yNC0xMC43LTI0LTI0WiIvPgogICAgPHBhdGggY2xhc3M9InN0MSIgZD0iTTIxMi4zLDEzOC40djMwYzAsMTMuMy0xMC43LDI0LTI0LDI0aDEwYzEzLjMsMCwyNC0xMC43LDI0LTI0di0zMGMwLTEzLjMtMTAuNy0yNC0yNC0yNGgtMTBjMTMuMywwLDI0LDEwLjcsMjQsMjRaIi8+CiAgICA8cmVjdCBjbGFzcz0ic3QzIiB4PSI5Ni4zIiB5PSIxMTQuNCIgd2lkdGg9IjEyNiIgaGVpZ2h0PSI3OCIgcng9IjI0IiByeT0iMjQiLz4KICAgIDxnPgogICAgICA8cGF0aCBjbGFzcz0ic3Q3IiBkPSJNMTQ0LjUsMTc0LjRjMTIsNSwxOCw1LjUsMzAsMCIvPgogICAgICA8cGF0aCBjbGFzcz0ic3QxMyIgZD0iTTE4NywxMzguNmM3LjQsMCwxMy40LDYuMiwxMy40LDEzLjlzLTYsMTMuOS0xMy40LDEzLjktMTMuNC02LjItMTMuNC0xMy45LDYtMTMuOSwxMy40LTEzLjlaIi8+CiAgICAgIDxjaXJjbGUgY2xhc3M9InN0MTIiIGN4PSIxOTAiIGN5PSIxNDkuOSIgcj0iMy41Ii8+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDEzIiBkPSJNMTMxLDEzOC42YzcuNCwwLDEzLjQsNi4yLDEzLjQsMTMuOXMtNiwxMy45LTEzLjQsMTMuOS0xMy40LTYuMi0xMy40LTEzLjksNi0xMy45LDEzLjQtMTMuOVoiLz4KICAgICAgPGNpcmNsZSBjbGFzcz0ic3QxMiIgY3g9IjEzNCIgY3k9IjE0OS45IiByPSIzLjUiLz4KICAgIDwvZz4KICAgIDxnPgogICAgICA8cGF0aCBjbGFzcz0ic3Q0IiBkPSJNMjI5LjQsMTI5LjRjMi40LDAsNC42LTEuNCw1LjYtMy42aDBjMS43LTMuNi0uMy03LjgtNC4yLTguOGwtNi4yLTIuMmMwLTMzLjgtMjguOS02MS4yLTY0LjUtNjEuMnMtNjQuNSwyNy40LTY0LjUsNjEuMmwtNi4yLDIuMmMtMy45LjktNS45LDUuMi00LjIsOC44aDBjMSwyLjIsMy4yLDMuNiw1LjYsMy42aDEzOC42LDBaIi8+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDciIGQ9Ik0xMTEuMSwxMTJjMzguNS00LjksNjAtNS4xLDk4LDAiLz4KICAgICAgPHBhdGggY2xhc3M9InN0MTEiIGQ9Ik0xNDIuMSw5M3YtMzhjMC0yLjgsMi4yLTUsNS01aDI2YzIuOCwwLDUsMi4yLDUsNXYzOGgtMzZaIi8+CiAgICAgIDxwYXRoIGNsYXNzPSJzdDkiIGQ9Ik0xNDIuMSw5M3YtMzhjMC0yLjgsMi4yLTUsNS01aDI2YzIuOCwwLDUsMi4yLDUsNXYzOCIvPgogICAgPC9nPgogIDwvZz4KPC9zdmc+" alt="IBM Bob"></a>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="テーマを切り替え"></button>
+    <h1>よくある質問（FAQ）</h1>
+    <p>質問をクリックすると回答が表示されます</p>
+  </header>
+
+  <div class="controls">
+    <input
+      type="text"
+      id="search-input"
+      class="search-box"
+      placeholder="キーワードで検索…"
+      aria-label="FAQを検索"
+    >
+    <div class="category-filters" id="category-filters">
+      <button class="filter-btn active" data-category="all">すべて</button>
+      <button class="filter-btn" data-category="general">全般</button>
+      <button class="filter-btn" data-category="usage">使い方</button>
+      <button class="filter-btn" data-category="advanced">高度な機能</button>
+      <button class="filter-btn" data-category="troubleshooting">トラブルシューティング</button>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <!-- 全般 -->
+    <section class="category" data-category="general">
+      <h2 class="category-title">全般</h2>
+
+      <div class="faq-item">
+        <div class="faq-question">Bobとは何ですか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">BobはAIを活用したコーディングアシスタントです。コードの記述、既存コードのリファクタリング、さまざまなタスクの実行をサポートします。カスタムモードや独自の指示を追加することで、Bobの機能を拡張することもできます。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Bobはどのように動作しますか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">
+          Bobは大規模言語モデル（LLM）を使用して、あなたのリクエストを理解し、アクションに変換します。具体的には以下のことができます。
+          <ul>
+            <li>プロジェクト内のファイルの読み書き</li>
+            <li>ターミナルでのコマンド実行</li>
+            <li>インターネットの閲覧（有効化している場合）</li>
+            <li>Model Context Protocol（MCP）を通じた外部ツールの利用</li>
+          </ul>
+          チャットインターフェースを通じてBobに指示を出し、Bobが提案したアクションを確認・承認することで操作します。
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Bobは何ができますか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">
+          Bobはさまざまなコーディングタスクを支援します。
+          <ul>
+            <li>自然言語の説明からコードを生成する</li>
+            <li>既存コードをリファクタリングする</li>
+            <li>バグを修正する</li>
+            <li>ドキュメントを作成する</li>
+            <li>コードを解説する</li>
+            <li>コードベースに関する質問に回答する</li>
+            <li>繰り返し作業を自動化する</li>
+            <li>新しいファイルやプロジェクトを作成する</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Bobで処理してはいけないデータはありますか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">
+          以下のデータ種別はBobで処理しないでください。
+          <ul>
+            <li>SPI（機密個人情報）</li>
+            <li>PHI（個人健康情報）</li>
+            <li>輸出規制対象データ（ITAR、APP 等）</li>
+            <li>規制対象の金融データ（銀行口座番号、PAN、非公開財務情報）</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Bobを使用する際のリスクは何ですか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">
+          Bobは強力なツールです。責任を持って使用することが重要です。以下の点にご注意ください。
+          <ul>
+            <li><strong>Bobは誤りを犯すことがあります。</strong>承認する前に、Bobが提案した変更を必ず慎重に確認してください。</li>
+            <li><strong>Bobはコマンドを実行できます。</strong>特に自動承認を使用している場合は、コマンドの実行依頼に十分注意してください。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 使い方 -->
+    <section class="category" data-category="usage">
+      <h2 class="category-title">使い方</h2>
+
+      <div class="faq-item">
+        <div class="faq-question">新しいタスクを開始するにはどうすればよいですか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">Bobパネルを開き、チャットボックスにタスクを入力します。Bobに実行させたい内容を明確かつ具体的に記述してください。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">モードを切り替えるにはどうすればよいですか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">チャット入力エリアのドロップダウンメニューから別のモードを選択するか、<code>/</code> コマンドを使用して特定のモードに切り替えます。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">ツールとは何ですか？どのように使いますか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">ツールはBobがあなたのシステムと対話するための機能です。Bobはタスクを完了するために適切なツールを自動的に選択して使用します。ツールを直接呼び出す必要はありません。各ツールの使用時には、承認または拒否するよう求められます。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">コンテキストメンションとは何ですか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">コンテキストメンションは、ファイル、フォルダ、問題などのプロジェクト情報をBobに伝える方法です。<code>@</code> 記号に続けてメンションしたいアイテムを入力します（例：<code>@/src/file.ts</code>、<code>@problems</code>）。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">BobはTerminalでコマンドを実行できますか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">はい、Bobはコマンドを実行できます。コマンドの自動承認を有効にしていない限り、各コマンドの実行前に承認を求められます。コマンドの自動承認には十分注意してください。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Bobにフィードバックを伝えるにはどうすればよいですか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">Bobが提案したアクションを承認または拒否することでフィードバックできます。フィードバックフィールドを使用して追加のコメントを入力することもできます。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Bobの動作をカスタマイズできますか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">
+          はい、いくつかの方法でBobをカスタマイズできます。
+          <ul>
+            <li><strong>カスタム指示：</strong>全モード共通の指示、またはモード固有の指示を設定できます。</li>
+            <li><strong>カスタムモード：</strong>独自のプロンプトとツール権限を持つモードを作成できます。</li>
+            <li><strong>Bobルール：</strong>プロジェクトルートの <code>.bob/rules/</code> フォルダにMarkdownのルールファイルを作成して追加ガイドラインを設定できます。</li>
+            <li><strong>設定：</strong>自動承認、差分編集など、さまざまな設定を調整できます。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Bobに自動承認の設定はありますか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">はい、有効にするとアクションを自動的に承認するいくつかの設定があります。</div>
+      </div>
+    </section>
+
+    <!-- 高度な機能 -->
+    <section class="category" data-category="advanced">
+      <h2 class="category-title">高度な機能</h2>
+
+      <div class="faq-item">
+        <div class="faq-question">MCP（Model Context Protocol）とは何ですか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">MCPはBobが外部サーバーと通信するためのプロトコルです。カスタムツールやリソースを使ってBobの機能を拡張することができます。</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">独自のMCPサーバーを作成できますか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">はい、独自のMCPサーバーを作成してBobにカスタム機能を追加することができます。</div>
+      </div>
+    </section>
+
+    <!-- トラブルシューティング -->
+    <section class="category" data-category="troubleshooting">
+      <h2 class="category-title">トラブルシューティング</h2>
+
+      <div class="faq-item">
+        <div class="faq-question">Bobが応答しません。どうすればよいですか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">
+          <ul>
+            <li>APIキーが正しく、期限切れになっていないことを確認してください。</li>
+            <li>インターネット接続を確認してください。</li>
+            <li>VS Codeを再起動してみてください。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Bobが意図しない変更を行いました。元に戻すにはどうすればよいですか？<span class="faq-icon">▼</span></div>
+        <div class="faq-answer">BobはVS Codeの組み込みファイル編集機能を使用しています。標準の「元に戻す」コマンド（Ctrl/Cmd + Z）で変更を取り消すことができます。また、チェックポイントを使用してファイルに加えられた変更を元に戻すこともできます。</div>
+      </div>
+    </section>
+
+    <p class="no-results" id="no-results">該当する項目が見つかりませんでした。</p>
+
+  </main>
+
+  <footer class="page-footer">
+    Made with IBM Bob
+  </footer>
+
+  <script>
+    var themeToggle = document.getElementById('theme-toggle');
+
+    function updateThemeToggle() {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? 'ライトテーマ' : 'ダークテーマ';
+    }
+
+    themeToggle.addEventListener('click', function() {
+      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      updateThemeToggle();
+    });
+
+    updateThemeToggle();
+
+    var searchInput = document.getElementById('search-input');
+    var noResults = document.getElementById('no-results');
+    var filterButtons = document.querySelectorAll('.filter-btn');
+    var categories = document.querySelectorAll('.category');
+    var activeCategory = 'all';
+
+    function normalize(text) {
+      return text.toLowerCase();
+    }
+
+    function applyFilters() {
+      var keyword = normalize(searchInput.value);
+      var totalVisible = 0;
+
+      categories.forEach(function(section) {
+        var cat = section.getAttribute('data-category');
+        var categoryMatch = (activeCategory === 'all' || activeCategory === cat);
+
+        if (!categoryMatch) {
+          section.style.display = 'none';
+          return;
+        }
+
+        var items = section.querySelectorAll('.faq-item');
+        var visibleInSection = 0;
+
+        items.forEach(function(item) {
+          if (keyword === '') {
+            item.style.display = '';
+            visibleInSection++;
+          } else {
+            var questionText = normalize(item.querySelector('.faq-question').textContent);
+            var answerText = normalize(item.querySelector('.faq-answer').textContent);
+            if (questionText.indexOf(keyword) !== -1 || answerText.indexOf(keyword) !== -1) {
+              item.style.display = '';
+              visibleInSection++;
+            } else {
+              item.style.display = 'none';
+            }
+          }
+        });
+
+        section.style.display = visibleInSection > 0 ? '' : 'none';
+        totalVisible += visibleInSection;
+      });
+
+      noResults.style.display = totalVisible === 0 ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', applyFilters);
+
+    filterButtons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        filterButtons.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        activeCategory = btn.getAttribute('data-category');
+        applyFilters();
+      });
+    });
+
+    document.querySelectorAll('.faq-question').forEach(function(question) {
+      question.addEventListener('click', function() {
+        var item = this.closest('.faq-item');
+        item.classList.toggle('open');
+      });
+    });
+  </script>
+
+</body>
+</html>
