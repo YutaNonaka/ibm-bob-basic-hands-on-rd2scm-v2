@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bob よくある質問</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo-link" href="https://www.ibm.com/products/bob" target="_blank" rel="noopener noreferrer" aria-label="IBM Bob 製品ページ（外部リンク）">
+        <img class="logo" src="bob.svg" alt="" width="48" height="48">
+      </a>
+      <h1>Bob よくある質問</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="controls" aria-label="FAQの検索と絞り込み">
+      <label class="search-label" for="search">キーワードで検索</label>
+      <input id="search" class="search-input" type="search" placeholder="質問や回答のキーワードを入力" autocomplete="off">
+
+      <div id="filters" class="filters" role="group" aria-label="カテゴリで絞り込み"></div>
+
+      <p id="count" class="count" aria-live="polite"></p>
+    </section>
+
+    <section id="faq-list" aria-label="質問一覧"></section>
+
+    <p id="empty" class="empty" hidden>条件に一致する質問が見つかりませんでした。キーワードやカテゴリを変更してください。</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>このFAQは Bob の公式FAQ（qa.md）を日本語に翻訳したものです。</p>
+    </div>
+  </footer>
+
+  <script src="faq-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
