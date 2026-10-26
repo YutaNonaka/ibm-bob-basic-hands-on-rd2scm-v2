@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bob よくある質問（FAQ）</title>
+  <script>
+    // 初期テーマ適用（描画前に実行してちらつきを防ぐ）
+    (function() {
+      var theme = null;
+      try { theme = localStorage.getItem('theme'); } catch (e) {}
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <style>
+    /* テーマ変数（ライト） */
+    :root {
+      color-scheme: light;
+      --brand-blue: #0f62fe;
+      --brand-blue-hover: #0353e9;
+      --brand-purple: #a56eff;
+      --header-gradient: linear-gradient(90deg, #0f62fe, #a56eff);
+
+      --bg-page: #f4f4f4;
+      --bg-card: #ffffff;
+      --bg-input: #f4f4f4;
+      --bg-hover: #e8e8e8;
+      --bg-footer: #262626;
+      --border: #e0e0e0;
+      --border-strong: #8d8d8d;
+      --text: #161616;
+      --text-sub: #525252;
+      --text-answer: #393939;
+      --text-placeholder: #6f6f6f;
+      --text-muted: #8d8d8d;
+      --text-footer: #c6c6c6;
+      --focus: #0f62fe;
+      --badge-bg: #a56eff;
+      --badge-text: #161616;
+    }
+
+    /* テーマ変数（ダーク） */
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --bg-page: #161616;
+      --bg-card: #262626;
+      --bg-input: #161616;
+      --bg-hover: #353535;
+      --bg-footer: #0f0f0f;
+      --border: #393939;
+      --border-strong: #6f6f6f;
+      --text: #f4f4f4;
+      --text-sub: #c6c6c6;
+      --text-answer: #e0e0e0;
+      --text-placeholder: #a8a8a8;
+      --text-muted: #8d8d8d;
+      --text-footer: #a8a8a8;
+      --focus: #78a9ff;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'IBM Plex Sans', Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--bg-page);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ヘッダー */
+    .site-header {
+      background: var(--header-gradient);
+      color: #ffffff;
+      padding: 0 1rem;
+    }
+
+    .site-header__inner {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 48px;
+    }
+
+    .site-header__logo-link {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .site-header__logo-link:focus-visible,
+    .theme-toggle:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
+    }
+
+    .site-header__logo {
+      width: 32px;
+      height: 32px;
+      display: block;
+    }
+
+    .site-header__title {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: #ffffff;
+    }
+
+    /* テーマ切替ボタン */
+    .theme-toggle {
+      margin-left: auto;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    .theme-toggle:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .theme-toggle__sun {
+      display: none;
+    }
+
+    [data-theme="dark"] .theme-toggle__moon {
+      display: none;
+    }
+
+    [data-theme="dark"] .theme-toggle__sun {
+      display: block;
+    }
+
+    /* メインコンテンツ */
+    main {
+      flex: 1;
+      padding: 2rem 1rem;
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      font-size: 32px;
+      font-weight: 300;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: var(--text-sub);
+      margin-bottom: 2rem;
+    }
+
+    /* 検索エリア */
+    .search-area {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border-strong);
+      background-color: var(--bg-input);
+      padding: 0 12px;
+      margin-bottom: 1rem;
+    }
+
+    .search-box:focus-within {
+      outline: 2px solid var(--focus);
+      outline-offset: -2px;
+    }
+
+    .search-icon {
+      color: var(--text-sub);
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+
+    .search-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      outline: none;
+      height: 40px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text);
+    }
+
+    .search-input::placeholder {
+      color: var(--text-placeholder);
+    }
+
+    .clear-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-sub);
+      padding: 4px;
+      display: none;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .clear-btn.visible {
+      display: flex;
+      align-items: center;
+    }
+
+    /* カテゴリーボタン */
+    .category-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .cat-btn {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-strong);
+      color: var(--text);
+      padding: 6px 14px;
+      font-size: 12px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background-color 0.1s, color 0.1s, border-color 0.1s;
+      white-space: nowrap;
+    }
+
+    .cat-btn:hover {
+      background-color: var(--bg-hover);
+    }
+
+    .cat-btn.active {
+      background-color: var(--brand-blue);
+      border-color: var(--brand-blue);
+      color: #ffffff;
+    }
+
+    .cat-btn.active:hover {
+      background-color: var(--brand-blue-hover);
+      border-color: var(--brand-blue-hover);
+    }
+
+    /* 検索結果カウント */
+    .result-count {
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-bottom: 1rem;
+    }
+
+    /* FAQリスト */
+    .faq-list {
+      list-style: none;
+    }
+
+    .faq-item {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      margin-bottom: 2px;
+    }
+
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 14px 16px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      transition: background-color 0.1s;
+    }
+
+    .faq-question:hover {
+      background-color: var(--bg-hover);
+    }
+
+    .faq-question-text {
+      flex: 1;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .faq-question-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .faq-badge {
+      font-size: 11px;
+      background-color: var(--badge-bg);
+      color: var(--badge-text);
+      padding: 2px 8px;
+      white-space: nowrap;
+    }
+
+    .faq-chevron {
+      color: var(--text-sub);
+      font-size: 18px;
+      transition: transform 0.2s;
+      line-height: 1;
+    }
+
+    .faq-item.open .faq-chevron {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease-out;
+    }
+
+    .faq-answer-inner {
+      padding: 0 16px 16px 16px;
+      font-size: 14px;
+      color: var(--text-answer);
+      line-height: 1.7;
+    }
+
+    .faq-answer-inner ul {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+
+    .faq-answer-inner ul li {
+      margin-bottom: 4px;
+    }
+
+    /* 0件メッセージ */
+    .no-result {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-sub);
+      display: none;
+    }
+
+    .no-result.visible {
+      display: block;
+    }
+
+    .no-result__icon {
+      font-size: 40px;
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+    }
+
+    .no-result__text {
+      font-size: 14px;
+    }
+
+    .no-result__hint {
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-top: 4px;
+    }
+
+    /* フッター */
+    .site-footer {
+      background-color: var(--bg-footer);
+      color: var(--text-footer);
+      text-align: center;
+      padding: 1.25rem 1rem;
+      font-size: 12px;
+    }
+
+    /* レスポンシブ */
+    @media (max-width: 480px) {
+      .page-title {
+        font-size: 24px;
+      }
+
+      .faq-question {
+        padding: 12px 12px;
+      }
+
+      .faq-badge {
+        display: none;
+      }
+    }
+  </style>
+
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-header__logo-link" href="https://www.ibm.com/products/bob" target="_blank" rel="noopener noreferrer">
+        <img class="site-header__logo" src="bob.svg" alt="Bob">
+      </a>
+      <span class="site-header__title">Bob</span>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="ダークテーマに切り替え">
+        <svg class="theme-toggle__moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+          <path d="M13.503 5.414a15.076 15.076 0 0 0 11.593 18.194a11.113 11.113 0 0 1-7.975 3.39c-.138 0-.278.005-.418 0a11.094 11.094 0 0 1-3.2-21.584M14.98 3a1.002 1.002 0 0 0-.175.016a13.096 13.096 0 0 0 1.825 25.981c.164.006.328 0 .49 0a13.072 13.072 0 0 0 10.703-5.555a1.01 1.01 0 0 0-.783-1.565A13.08 13.08 0 0 1 15.89 4.38A1.015 1.015 0 0 0 14.98 3z"/>
+        </svg>
+        <svg class="theme-toggle__sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+          <path d="M16 12a4 4 0 1 1-4 4a4.005 4.005 0 0 1 4-4m0-2a6 6 0 1 0 6 6a6 6 0 0 0-6-6zM6.854 5.375L5.44 6.79l2.12 2.12L8.97 7.5zM2 15h4v2H2zm4.86 9.5l-1.42 1.41l2.12 2.12l1.41-1.41zM15 26h2v4h-2zm8.14-1.5l-1.41 1.41l2.12 2.12l1.42-1.41zM26 15h4v2h-4zm-3.86-6.5l1.41 1.41l2.12-2.12l-1.41-1.42zM15 2h2v4h-2z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main>
+    <div class="content">
+      <h1 class="page-title">よくある質問</h1>
+      <p class="page-subtitle">Bobの使い方や機能についてよくある質問をまとめています。</p>
+
+      <!-- 検索・絞り込みエリア -->
+      <div class="search-area">
+        <div class="search-box">
+          <span class="search-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+              <path d="M29,27.586l-7.552-7.552a11.018,11.018,0,1,0-1.414,1.414L27.586,29ZM4,13a9,9,0,1,1,9,9A9.01,9.01,0,0,1,4,13Z"/>
+            </svg>
+          </span>
+          <input
+            class="search-input"
+            type="search"
+            id="searchInput"
+            placeholder="キーワードで検索..."
+            aria-label="FAQを検索"
+            autocomplete="off"
+          >
+          <button class="clear-btn" id="clearBtn" aria-label="検索をクリア">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+              <path d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z"/>
+            </svg>
+          </button>
+        </div>
+        <div class="category-buttons" role="group" aria-label="カテゴリーで絞り込み">
+          <button class="cat-btn active" data-category="all">すべて</button>
+          <button class="cat-btn" data-category="全般">全般</button>
+          <button class="cat-btn" data-category="使い方">使い方</button>
+          <button class="cat-btn" data-category="高度な機能">高度な機能</button>
+          <button class="cat-btn" data-category="トラブルシューティング">トラブルシューティング</button>
+        </div>
+      </div>
+
+      <!-- 検索結果カウント -->
+      <p class="result-count" id="resultCount" aria-live="polite"></p>
+
+      <!-- FAQリスト -->
+      <ul class="faq-list" id="faqList"></ul>
+
+      <!-- 0件メッセージ -->
+      <div class="no-result" id="noResult" role="status">
+        <div class="no-result__icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M29,27.586l-7.552-7.552a11.018,11.018,0,1,0-1.414,1.414L27.586,29ZM4,13a9,9,0,1,1,9,9A9.01,9.01,0,0,1,4,13Z"/>
+          </svg>
+        </div>
+        <p class="no-result__text">該当するFAQが見つかりませんでした。</p>
+        <p class="no-result__hint">キーワードを変えるか、カテゴリーを「すべて」に設定してお試しください。</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer class="site-footer">
+    <p>&copy; IBM Corporation. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // ─── FAQデータ ───────────────────────────────────────────────
+    var FAQ_DATA = [
+      {
+        category: '全般',
+        question: 'Bobとは何ですか？',
+        answer: 'BobはAIを活用したコーディングコンパニオンです。コードの記述、既存コードのリファクタリング、さまざまなタスクの完了をサポートします。カスタムモードや独自の指示を追加することで、Bobの機能を拡張することも可能です。'
+      },
+      {
+        category: '全般',
+        question: 'Bobはどのように動作しますか？',
+        answer: '大規模言語モデル（LLM）を使用して、あなたのリクエストを理解し、アクションに変換します。Bobが行えることは次のとおりです：<ul><li>プロジェクト内のファイルの読み書き</li><li>ターミナルでのコマンド実行</li><li>インターネットの閲覧（有効化されている場合）</li><li>MCP（モデルコンテキストプロトコル）を介した外部ツールの利用</li></ul>チャットインターフェースを通じてBobに指示を与え、提案されたアクションを確認・承認します。'
+      },
+      {
+        category: '全般',
+        question: 'Bobは何ができますか？',
+        answer: 'Bobはさまざまなコーディングタスクをサポートします：<ul><li>自然言語の説明からコードを生成する</li><li>既存のコードをリファクタリングする</li><li>バグを修正する</li><li>ドキュメントを作成する</li><li>コードを説明する</li><li>コードベースに関する質問に答える</li><li>繰り返しタスクを自動化する</li><li>新しいファイルやプロジェクトを作成する</li></ul>'
+      },
+      {
+        category: '全般',
+        question: 'Bobで処理できないデータの種類はありますか？',
+        answer: '以下のデータ種別はBobで処理しないでください：<ul><li>SPI（機密個人情報）</li><li>PHI（個人健康情報）</li><li>輸出規制対象データ（ITAR、APPなど）</li><li>規制対象の財務データ（銀行口座番号、PAN、非公開財務データなど）</li></ul>'
+      },
+      {
+        category: '全般',
+        question: 'Bobを使うリスクは何ですか？',
+        answer: 'Bobは強力なツールですが、責任を持って使用することが重要です。以下の点にご注意ください：<ul><li><strong>Bobはミスを犯すことがあります。</strong> Bobが提案した変更は、承認する前に必ず注意深くレビューしてください。</li><li><strong>Bobはコマンドを実行できます。</strong> 特に自動承認を使用している場合は、Bobにコマンドを実行させる際に注意が必要です。</li></ul>'
+      },
+      {
+        category: '使い方',
+        question: '新しいタスクを始めるにはどうすればいいですか？',
+        answer: 'Bobパネルを開き、チャットボックスにタスクを入力してください。Bobに何をしてほしいか、明確かつ具体的に記述することが重要です。'
+      },
+      {
+        category: '使い方',
+        question: 'モードを切り替えるにはどうすればいいですか？',
+        answer: 'チャット入力エリアのドロップダウンメニューから別のモードを選択するか、`/`コマンドを使って特定のモードに切り替えることができます。'
+      },
+      {
+        category: '使い方',
+        question: 'ツールとは何ですか？どのように使いますか？',
+        answer: 'ツールはBobがシステムと対話するための手段です。Bobはタスクを完了するために適切なツールを自動的に選択して使用します。ツールを直接呼び出す必要はありません。ツールが使用されるたびに承認または拒否を求めるプロンプトが表示されます。'
+      },
+      {
+        category: '使い方',
+        question: 'コンテキストメンションとは何ですか？',
+        answer: 'コンテキストメンションは、ファイル、フォルダー、問題など、プロジェクトに関する特定の情報をBobに提供する方法です。`@`シンボルの後にメンションしたい項目を入力します（例：`@/src/file.ts`、`@problems`）。'
+      },
+      {
+        category: '使い方',
+        question: 'Bobはターミナルでコマンドを実行できますか？',
+        answer: 'はい、Bobはコマンドを実行できます。コマンドを実行するたびに承認を求められます（コマンドの自動承認を有効にしている場合を除く）。コマンドの自動承認には十分ご注意ください。'
+      },
+      {
+        category: '使い方',
+        question: 'Bobにフィードバックするにはどうすればいいですか？',
+        answer: 'Bobが提案したアクションを承認または拒否することでフィードバックできます。フィードバックフィールドを使って追加のコメントを入力することも可能です。'
+      },
+      {
+        category: '使い方',
+        question: 'Bobの動作をカスタマイズできますか？',
+        answer: 'はい、Bobはいくつかの方法でカスタマイズできます：<ul><li><strong>カスタム指示：</strong> すべてのモードに適用される全般的な指示、またはモード別の指示を提供できます。</li><li><strong>カスタムモード：</strong> カスタマイズされたプロンプトとツール権限を持つ独自のモードを作成できます。</li><li><strong>Bobルール：</strong> プロジェクトルートの`.bob/rules/`フォルダーにMarkdownルールファイルを作成して、追加のガイドラインを提供できます。</li><li><strong>設定：</strong> 自動承認、差分編集など、さまざまな設定を調整できます。</li></ul>'
+      },
+      {
+        category: '使い方',
+        question: 'Bobには自動承認の設定がありますか？',
+        answer: 'はい、Bobには有効にするとアクションを自動的に承認するいくつかの設定があります。'
+      },
+      {
+        category: '高度な機能',
+        question: 'MCP（モデルコンテキストプロトコル）とは何ですか？',
+        answer: 'MCPはBobが外部サーバーと通信するためのプロトコルで、カスタムツールやリソースによってBobの機能を拡張することができます。'
+      },
+      {
+        category: '高度な機能',
+        question: '独自のMCPサーバーを作成できますか？',
+        answer: 'はい、独自のMCPサーバーを作成してBobにカスタム機能を追加することができます。'
+      },
+      {
+        category: 'トラブルシューティング',
+        question: 'Bobが応答しません。どうすればいいですか？',
+        answer: '以下をご確認ください：<ul><li>APIキーが正しく、有効期限が切れていないか確認する</li><li>インターネット接続を確認する</li><li>VS Codeを再起動してみる</li></ul>'
+      },
+      {
+        category: 'トラブルシューティング',
+        question: 'Bobが意図しない変更をしました。元に戻すには？',
+        answer: 'BobはVS Codeの組み込みファイル編集機能を使用しています。標準の「元に戻す」コマンド（Ctrl/Cmd + Z）で変更を取り消すことができます。また、チェックポイントを使用してファイルに加えられた変更を元に戻すこともできます。'
+      }
+    ];
+
+    // ─── 状態 ────────────────────────────────────────────────────
+    var currentCategory = 'all';
+    var currentKeyword = '';
+
+    // ─── DOM参照 ──────────────────────────────────────────────────
+    var searchInput = document.getElementById('searchInput');
+    var clearBtn = document.getElementById('clearBtn');
+    var faqList = document.getElementById('faqList');
+    var noResult = document.getElementById('noResult');
+    var resultCount = document.getElementById('resultCount');
+    var catButtons = document.querySelectorAll('.cat-btn');
+
+    // ─── フィルタリング ───────────────────────────────────────────
+    function getFilteredFAQs() {
+      var keywords = currentKeyword.trim().toLowerCase().split(/\s+/).filter(function(k) { return k.length > 0; });
+      return FAQ_DATA.filter(function(item) {
+        var categoryMatch = currentCategory === 'all' || item.category === currentCategory;
+        if (!categoryMatch) return false;
+        if (keywords.length === 0) return true;
+        function stripHtml(html) {
+          var tmp = document.createElement('div');
+          tmp.innerHTML = html;
+          return tmp.textContent || tmp.innerText || '';
+        }
+        var text = (item.question + ' ' + stripHtml(item.answer)).toLowerCase();
+        return keywords.every(function(kw) { return text.indexOf(kw) !== -1; });
+      });
+    }
+
+    // ─── 描画 ─────────────────────────────────────────────────────
+    function render() {
+      var filtered = getFilteredFAQs();
+      faqList.innerHTML = '';
+
+      if (filtered.length === 0) {
+        noResult.classList.add('visible');
+        resultCount.textContent = '';
+      } else {
+        noResult.classList.remove('visible');
+        resultCount.textContent = filtered.length + ' 件';
+
+        filtered.forEach(function(item, index) {
+          var li = document.createElement('li');
+          li.className = 'faq-item';
+          li.setAttribute('data-index', index);
+
+          var btn = document.createElement('button');
+          btn.className = 'faq-question';
+          btn.setAttribute('aria-expanded', 'false');
+          btn.innerHTML =
+            '<span class="faq-question-text">' + escapeHtml(item.question) + '</span>' +
+            '<span class="faq-question-right">' +
+              '<span class="faq-badge">' + escapeHtml(item.category) + '</span>' +
+              '<span class="faq-chevron" aria-hidden="true">' +
+                '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor"><path d="M16 22L6 12l1.4-1.4L16 19.2l8.6-8.6L26 12z"/></svg>' +
+              '</span>' +
+            '</span>';
+
+          var answerDiv = document.createElement('div');
+          answerDiv.className = 'faq-answer';
+          answerDiv.setAttribute('role', 'region');
+
+          var answerInner = document.createElement('div');
+          answerInner.className = 'faq-answer-inner';
+          answerInner.innerHTML = item.answer;
+          answerDiv.appendChild(answerInner);
+
+          btn.addEventListener('click', function() {
+            var isOpen = li.classList.contains('open');
+            if (isOpen) {
+              li.classList.remove('open');
+              btn.setAttribute('aria-expanded', 'false');
+              answerDiv.style.maxHeight = null;
+            } else {
+              li.classList.add('open');
+              btn.setAttribute('aria-expanded', 'true');
+              answerDiv.style.maxHeight = answerDiv.scrollHeight + 'px';
+            }
+          });
+
+          li.appendChild(btn);
+          li.appendChild(answerDiv);
+          faqList.appendChild(li);
+        });
+      }
+    }
+
+    // ─── HTMLエスケープ ───────────────────────────────────────────
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // ─── イベント ─────────────────────────────────────────────────
+    searchInput.addEventListener('input', function() {
+      currentKeyword = searchInput.value;
+      clearBtn.classList.toggle('visible', currentKeyword.length > 0);
+      render();
+    });
+
+    clearBtn.addEventListener('click', function() {
+      searchInput.value = '';
+      currentKeyword = '';
+      clearBtn.classList.remove('visible');
+      searchInput.focus();
+      render();
+    });
+
+    catButtons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        catButtons.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        currentCategory = btn.getAttribute('data-category');
+        render();
+      });
+    });
+
+    // ─── テーマ切替 ───────────────────────────────────────────────
+    var themeToggle = document.getElementById('themeToggle');
+    var rootEl = document.documentElement;
+
+    function updateThemeToggle() {
+      var isDark = rootEl.getAttribute('data-theme') === 'dark';
+      themeToggle.setAttribute('aria-label', isDark ? 'ライトテーマに切り替え' : 'ダークテーマに切り替え');
+    }
+
+    themeToggle.addEventListener('click', function() {
+      var next = rootEl.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      rootEl.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      updateThemeToggle();
+    });
+
+    updateThemeToggle();
+
+
+    // ─── 初期描画 ─────────────────────────────────────────────────
+    render();
+  </script>
+
+</body>
+</html>
