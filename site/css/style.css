@@ -1,0 +1,359 @@
+:root {
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --surface-hover: #edf5ff;
+  --border: #d0d5dd;
+  --text: #1f2328;
+  --muted: #4b5563;
+  --accent: #0f62fe;
+  --accent-purple: #a56eff;
+  --accent-gradient: linear-gradient(135deg, #0f62fe 0%, #a56eff 100%);
+  --accent-bg: #edf5ff;
+  --code-bg: #eef0f3;
+  --radius: 8px;
+}
+
+[data-theme="dark"] {
+  --bg: #121619;
+  --surface: #1e2227;
+  --surface-hover: #282d34;
+  --border: #39414a;
+  --text: #f4f4f4;
+  --muted: #a2a9b3;
+  --accent: #4589ff;
+  --accent-purple: #be95ff;
+  --accent-gradient: linear-gradient(135deg, #4589ff 0%, #be95ff 100%);
+  --accent-bg: #1a273b;
+  --code-bg: #282d34;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans",
+    "Yu Gothic UI", "Meiryo", "Segoe UI", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.site-header {
+  position: relative;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 0;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.site-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-gradient);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  border-radius: var(--radius);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.logo-link:hover {
+  opacity: 0.85;
+  transform: scale(1.04);
+}
+
+.logo-link:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.site-logo {
+  display: block;
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.header-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.site-header h1 {
+  margin: 0 0 2px;
+  font-size: 1.6rem;
+  line-height: 1.3;
+}
+
+.lead {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* テーマ切り替えボタン */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+}
+
+.theme-toggle-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+main {
+  padding-top: 24px;
+  padding-bottom: 32px;
+}
+
+/* 検索・絞り込み */
+.search-label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.result-count {
+  margin: 8px 0 12px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.category-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.category-btn:hover {
+  background: var(--surface-hover);
+}
+
+.category-btn[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--accent-gradient);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* FAQ一覧 */
+.faq-section {
+  margin-bottom: 28px;
+}
+
+.faq-section h2 {
+  margin: 0 0 8px;
+  padding-left: 10px;
+  border-left: 4px solid var(--accent);
+  font-size: 1.25rem;
+}
+
+.faq-item {
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.faq-question {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.faq-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.faq-toggle:hover {
+  background: var(--surface-hover);
+}
+
+.faq-toggle::after {
+  content: "+";
+  flex: none;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.faq-toggle[aria-expanded="true"]::after {
+  content: "\2212";
+}
+
+.faq-answer {
+  padding: 0 16px 14px;
+}
+
+.faq-answer[hidden] {
+  display: none;
+}
+
+.faq-answer p {
+  margin: 0 0 8px;
+}
+
+.faq-answer ul {
+  margin: 0 0 8px;
+  padding-left: 1.5em;
+}
+
+.faq-answer code {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--code-bg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9em;
+}
+
+.notice {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-align: center;
+}
+
+.notice[hidden] {
+  display: none;
+}
+
+.site-footer {
+  padding: 16px 0 32px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+/* フォーカス表示 */
+.search-input:focus-visible,
+.category-btn:focus-visible,
+.faq-toggle:focus-visible,
+.theme-toggle-btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* スマホ幅 */
+@media (max-width: 767px) {
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .header-main {
+    width: 100%;
+  }
+
+  .site-header h1 {
+    font-size: 1.35rem;
+  }
+
+  .theme-toggle-btn {
+    align-self: flex-end;
+  }
+
+  .faq-toggle {
+    padding: 12px;
+  }
+
+  .faq-answer {
+    padding: 0 12px 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
