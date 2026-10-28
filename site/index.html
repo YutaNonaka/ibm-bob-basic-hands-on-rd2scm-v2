@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bob よくある質問</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="header-main">
+        <a href="https://www.ibm.com/products/bob" target="_blank" rel="noopener noreferrer" class="logo-link" aria-label="IBM Bob 公式製品ページ（新しいタブで開く）">
+          <img src="bob.svg" alt="Bob ロゴ" class="site-logo" width="48" height="48">
+        </a>
+        <div class="header-titles">
+          <h1>Bob よくある質問</h1>
+          <p class="lead">Bobに関するよくある質問と回答をまとめています。</p>
+        </div>
+      </div>
+      <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="ダークテーマに切り替える" aria-pressed="false" title="テーマを切り替える">
+        <span class="theme-toggle-icon" aria-hidden="true">🌙</span>
+        <span class="theme-toggle-text">ダーク</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <noscript>
+      <p class="notice">このサイトの表示にはJavaScriptが必要です。</p>
+    </noscript>
+
+    <section class="controls" aria-label="FAQの検索と絞り込み">
+      <label class="search-label" for="search-input">キーワードで検索</label>
+      <input id="search-input" class="search-input" type="search" maxlength="100"
+             placeholder="例: MCP、コマンド、モード" autocomplete="off">
+      <p id="result-count" class="result-count" role="status" aria-live="polite"></p>
+      <div id="category-filter" class="category-filter" role="group" aria-label="カテゴリで絞り込み"></div>
+    </section>
+
+    <div id="faq-list"></div>
+    <p id="no-result" class="notice" role="status" hidden>該当するFAQが見つかりませんでした</p>
+    <p id="load-error" class="notice" role="alert" hidden>FAQデータを読み込めませんでした</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>出典: qa.md(Bob FAQ)を日本語に翻訳したものです。</p>
+    </div>
+  </footer>
+
+  <script src="js/faq-data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
